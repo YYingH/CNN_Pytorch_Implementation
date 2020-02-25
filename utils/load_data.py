@@ -25,12 +25,21 @@ def load_data_AlexNet(train_dir, val_dir, batch_size, input_size = 224):
     return train_dataloader, val_dataloader
 
         
+# def delWrongfiles(PATH):
+#     import os
+#     for path, dir_list, file_list in os.walk(PATH):
+#         for file_name in file_list:
+#             img_path = os.path.join(path, file_name)
+#             print(img_path)
+#             if file_name.startswith('.'):
+#                 print(img_path)
+#                 # os.remove(img_path)
 
-    
 
 if __name__ == "__main__":
-    train_dir = "dataset/intel-image-classification/seg_train/seg_train"
-    val_dir = "dataset/intel-image-classification/seg_test/seg_test"
+    PATH = "/home/ying/repos/CNN_Pytorch_Implementation/"
+    train_dir = PATH+"dataset/intel-image-classification/seg_train/seg_train"
+    val_dir = PATH+"dataset/intel-image-classification/seg_test/seg_test"
     train_dataloader, val_dataloader = load_data_AlexNet(train_dir, val_dir, 32)
     for img, label in train_dataloader:
         print(label)

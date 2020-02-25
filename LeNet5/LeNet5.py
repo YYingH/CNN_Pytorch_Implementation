@@ -1,6 +1,6 @@
-import torch
 import torch.nn as nn
 import torch.nn.functional as F
+
 class LeNet_5(nn.Module):
     def __init__(self, num_classes):
         super(LeNet_5, self).__init__()
