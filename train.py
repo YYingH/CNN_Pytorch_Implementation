@@ -9,12 +9,12 @@ from AlexNet import AlexNet
 from LeNet5 import LeNet5
 from VGG import VGG
 
-Max_acc = 0
 train_dir = "dataset/intel-image-classification/seg_train/seg_train"
 val_dir = "dataset/intel-image-classification/seg_test/seg_test"
 learning_rate = 1e-4
 
 Net = "VGG"
+Max_acc = 0
 
 def calculate_accuracy(fx, y):
     preds = fx.max(1, keepdim=True)[1]
@@ -42,7 +42,7 @@ def evaluate(epoch, model, iterator, optimizer, criterion):
     return epoch_acc / len(iterator)
 
 
-def train(epoch, model, train_iterator, val_iterator, optimizer, criterion):
+def train(epoch, model, train_iterator, val_iterator, optimizer, criterion, Max_acc):
     epoch_loss, epoch_acc = 0, 0 
     i = 0
     model.train()
@@ -91,12 +91,18 @@ if __name__ == "__main__":
         train_iterator, val_iterator = load_data.load_data_AlexNet(train_dir, val_dir, batch_size = 32, input_size=224)
         model = VGG.VGGNet(net_arch = VGG.net_16, num_classes = 6)
         model.apply(VGG.weight_init)
-    
 
+    elif Net == "GoogLeNet":
+        model_path = ["models/intel-image-classification/","","_GoogLeNet.pt"]
+        logging.basicConfig(level=logging.INFO,filename='logs/GoogLeNet.log',format="%(message)s")
+        train_iterator, val_iterator = load_data.load_data_AlexNet(train_dir, val_dir, batch_size = 32, input_size=224)
+        model = VGG.VGGNet(net_arch = VGG.net_16, num_classes = 6)
+        model.apply(VGG.weight_init)
+    
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     for epoch in range(100):
-        train_loss = train(epoch, model, train_iterator,val_iterator, optimizer, criterion)
+        train_loss = train(epoch, model, train_iterator,val_iterator, optimizer, criterion, Max_acc)
             
 
 
