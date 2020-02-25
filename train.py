@@ -1,12 +1,17 @@
 from utils import load_data
-from AlexNet import AlexNet
 from utils import load_data
 
 import torch
 import torch.nn as nn
 import logging
 
-model_path = ["models/intel-image-classification/","","_AlxeNet.pt"]
+train_dir = "dataset/intel-image-classification/seg_train/seg_train"
+val_dir = "dataset/intel-image-classification/seg_test/seg_test"
+
+# model_path = ["models/intel-image-classification/","","_AlxeNet.pt"]
+model_path = ["models/intel-image-classification/","","_LeNet5.pt"]
+# logging.basicConfig(level=logging.INFO,filename='logs/AlexNet.log',format="%(message)s")
+logging.basicConfig(level=logging.INFO,filename='logs/LeNet5.log',format="%(message)s")
 
 def calculate_accuracy(fx, y):
     preds = fx.max(1, keepdim=True)[1]
@@ -59,16 +64,19 @@ def train(epoch, model, train_iterator, val_iterator, optimizer, criterion):
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO,filename='logs/AlexNet.log',format="%(message)s")
+    # from AlexNet import AlexNet
+    # train_iterator, val_iterator = load_data.load_data_AlexNet(train_dir, val_dir, batch_size = 32, input_size=224)
+    # model = AlexNet.AlexNet(num_classes = 6)
+    # model.apply(AlexNet.weight_init)
+
+    from LeNet5 import LeNet5
+    train_iterator, val_iterator = load_data.load_data_AlexNet(train_dir, val_dir, batch_size = 32, input_size=28)
+    model = LeNet5.LeNet_5(num_classes = 6)
 
 
-    train_dir = "dataset/intel-image-classification/seg_train/seg_train"
-    val_dir = "dataset/intel-image-classification/seg_test/seg_test"
+    
 
-    train_iterator, val_iterator = load_data.load_data_AlexNet(train_dir, val_dir, batch_size = 32, input_size=224)
 
-    model = AlexNet.AlexNet(num_classes = 6)
-    model.apply(AlexNet.weight_init)
     learning_rate = 1e-4
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
