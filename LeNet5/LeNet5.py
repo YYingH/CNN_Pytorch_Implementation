@@ -1,10 +1,11 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 class LeNet_5(nn.Module):
     def __init__(self, num_classes):
         super(LeNet_5, self).__init__()
         # N C H W
-        self.conv1 = nn.Conv2d(1, 6, 3)
+        self.conv1 = nn.Conv2d(3, 6, 3)
         self.conv2 = nn.Conv2d(6, 16, 3)
         
         self.fc1 = nn.Linear(400, 120)
