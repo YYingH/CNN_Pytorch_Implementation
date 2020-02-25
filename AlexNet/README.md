@@ -1,7 +1,6 @@
 # AlexNet
-AlexNet-Pytorch
 
-### Paper: [ImageNet Classification with Deep Convolutional Neural Networks]
+### Paper: [ImageNet Classification with Deep Convolutional Neural Networks](https://github.com/YYingH/CNN_Pytorch_Implementation/blob/master/AlexNet/img/AlexNet.pdf)
 
 ![Structure](img/AlexNet.jpg)
 

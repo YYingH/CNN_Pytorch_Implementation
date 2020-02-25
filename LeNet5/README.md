@@ -1,5 +1,5 @@
 # LeNet-5
-
+### Paper: [Gradient-Based Learning Applied to Document Recognition](https://github.com/YYingH/CNN_Pytorch_Implementation/blob/master/LeNet5/img/LeNet-5.pdf)
 
 INPUT: [28x28x1]           weights: 0
 

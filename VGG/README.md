@@ -1,7 +1,7 @@
 # VGG
 Pytorch-VGG
 
-### Paper: [Very Deep Convolutional Networks For Large-scale Image Recognition]
+### Paper: [Very Deep Convolutional Networks For Large-scale Image Recognition](https://github.com/YYingH/CNN_Pytorch_Implementation/blob/master/VGG/img/VGG.pdf)
 
 ![Structure](img/VGG.jpg)
 
