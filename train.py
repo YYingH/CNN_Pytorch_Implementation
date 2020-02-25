@@ -8,12 +8,15 @@ import logging
 from AlexNet import AlexNet
 from LeNet5 import LeNet5
 from VGG import VGG
+from GoogLeNet import GoogLeNet
 
-train_dir = "dataset/intel-image-classification/seg_train/seg_train"
-val_dir = "dataset/intel-image-classification/seg_test/seg_test"
+PATH = "/home/ying/repos/CNN_Pytorch_Implementation/"
+
+train_dir = PATH+"dataset/intel-image-classification/seg_train/seg_train"
+val_dir = PATH+"dataset/intel-image-classification/seg_test/seg_test"
 learning_rate = 1e-4
 
-Net = "VGG"
+Net = "GoogLeNet"
 Max_acc = 0
 
 def calculate_accuracy(fx, y):
@@ -30,6 +33,9 @@ def evaluate(epoch, model, iterator, optimizer, criterion):
     model.eval()
     with torch.no_grad():
         for (x, y) in iterator:
+            if is_cuda:
+                x, y = x.cuda(), y.cuda()
+
             optimizer.zero_grad()
             fx = model(x)
             loss = criterion(fx, y)
@@ -42,11 +48,14 @@ def evaluate(epoch, model, iterator, optimizer, criterion):
     return epoch_acc / len(iterator)
 
 
-def train(epoch, model, train_iterator, val_iterator, optimizer, criterion, Max_acc):
+def train(epoch, model, train_iterator, val_iterator, optimizer, criterion):
+    global Max_acc
     epoch_loss, epoch_acc = 0, 0 
     i = 0
     model.train()
     for(x, y) in train_iterator:
+        if is_cuda:
+            x,y = x.cuda(), y.cuda()
         i += 1
         optimizer.zero_grad()
         fx = model(x)
@@ -73,36 +82,38 @@ def train(epoch, model, train_iterator, val_iterator, optimizer, criterion, Max_
 
 if __name__ == "__main__":
     if Net == "AlexNet":
-        model_path = ["models/intel-image-classification/","","_AlxeNet.pt"]
-        logging.basicConfig(level=logging.INFO,filename='logs/AlexNet.log',format="%(message)s")
+        model_path = [PATH+"models/intel-image-classification/","","_AlxeNet.pt"]
+        logging.basicConfig(level=logging.INFO,filename=PATH+'logs/AlexNet.log',format="%(message)s")
         train_iterator, val_iterator = load_data.load_data_AlexNet(train_dir, val_dir, batch_size = 32, input_size=224)
         model = AlexNet.AlexNet(num_classes = 6)
         model.apply(AlexNet.weight_init)
 
     elif Net == "LeNet5":
-        model_path = ["models/intel-image-classification/","","_LeNet5.pt"]
-        logging.basicConfig(level=logging.INFO,filename='logs/LeNet5.log',format="%(message)s")
+        model_path = [PATH+"models/intel-image-classification/","","_LeNet5.pt"]
+        logging.basicConfig(level=logging.INFO,filename=PATH+'logs/LeNet5.log',format="%(message)s")
         train_iterator, val_iterator = load_data.load_data_AlexNet(train_dir, val_dir, batch_size = 32, input_size=28)
         model = LeNet5.LeNet_5(num_classes = 6)
 
     elif Net == "VGG":
-        model_path = ["models/intel-image-classification/","","_VGG16.pt"]
-        logging.basicConfig(level=logging.INFO,filename='logs/VGG16.log',format="%(message)s")
+        model_path = [PATH+"models/intel-image-classification/","","_VGG16.pt"]
+        logging.basicConfig(level=logging.INFO,filename=PATH+'logs/VGG16.log',format="%(message)s")
         train_iterator, val_iterator = load_data.load_data_AlexNet(train_dir, val_dir, batch_size = 32, input_size=224)
         model = VGG.VGGNet(net_arch = VGG.net_16, num_classes = 6)
         model.apply(VGG.weight_init)
 
     elif Net == "GoogLeNet":
-        model_path = ["models/intel-image-classification/","","_GoogLeNet.pt"]
-        logging.basicConfig(level=logging.INFO,filename='logs/GoogLeNet.log',format="%(message)s")
+        model_path = [PATH+"models/intel-image-classification/","","_GoogLeNet.pt"]
+        logging.basicConfig(level=logging.INFO,filename=PATH+'logs/GoogLeNet.log',format="%(message)s")
         train_iterator, val_iterator = load_data.load_data_AlexNet(train_dir, val_dir, batch_size = 32, input_size=224)
-        model = VGG.VGGNet(net_arch = VGG.net_16, num_classes = 6)
-        model.apply(VGG.weight_init)
-    
+        model = GoogLeNet.GoogLeNet(num_classes = 6)
+
+    is_cuda = torch.cuda.is_available()
+    if is_cuda:
+        model = model.cuda()
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     for epoch in range(100):
-        train_loss = train(epoch, model, train_iterator,val_iterator, optimizer, criterion, Max_acc)
+        train_loss = train(epoch, model, train_iterator,val_iterator, optimizer, criterion)
             
 
 
