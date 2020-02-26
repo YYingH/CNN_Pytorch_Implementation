@@ -10,7 +10,8 @@ from LeNet5 import LeNet5
 from VGG import VGG
 from GoogLeNet import GoogLeNet
 
-PATH = "/home/ying/repos/CNN_Pytorch_Implementation/"
+# PATH = "/home/ying/repos/CNN_Pytorch_Implementation/"
+PATH = ""
 
 train_dir = PATH+"dataset/intel-image-classification/seg_train/seg_train"
 val_dir = PATH+"dataset/intel-image-classification/seg_test/seg_test"
