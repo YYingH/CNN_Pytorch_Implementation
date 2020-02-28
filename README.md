@@ -19,6 +19,7 @@
         3. LRN
 
 - [x] [VGG](https://github.com/YYingH/CNN_Pytorch_Implementation/tree/master/VGG)
+    
     For Alexnet, VGG is not a big improvement. The main improvement is the use of a small convolution kernel. The structure is build a convolution layer and followed by a maxpooling make the network is deeper and wider.
     
         1. Remove LRN layer.
